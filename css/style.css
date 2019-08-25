@@ -1,0 +1,12 @@
+.container {
+  padding: 1.5rem 1.25rem;
+}
+
+td,
+th {
+  padding: 0.5rem 0.75rem;
+}
+
+.anchor-button {
+  margin: 1.25rem 0;
+}
