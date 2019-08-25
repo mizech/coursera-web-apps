@@ -22,7 +22,7 @@
                 <input type="text" class="form-control" id="pass" name="pass" >
             </div>
             <input type="submit" name="login" id="login" class="btn btn-primary" value="Log In" />
-            <button type="submit" name="cancel" class="btn btn-primary">Cancel</button>
+            <button type="submit" name="cancel" class="btn btn-warning">Cancel</button>
         </form>
         <?php
             session_start();

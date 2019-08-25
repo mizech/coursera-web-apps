@@ -12,15 +12,15 @@
       <?php   
           session_start();
 
-          if (isset($_SESSION['delete_confirmed']) ) {
+          if (isset($_SESSION["delete_confirmed"]) ) {
             echo("<p style='color: green;'>Record deleted</p>\n");
-            unset($_SESSION['delete_confirmed']);
-          } else if (isset($_SESSION['edited'])) {
+            unset($_SESSION["delete_confirmed"]);
+          } else if (isset($_SESSION["edited"])) {
             echo("<p style='color: green;'>Record edited</p>\n");
-            unset($_SESSION['edited']);
+            unset($_SESSION["edited"]);
           } else if (isset($_SESSION["added_profile"])) {
             echo("<p style='color: green;'>Record edited</p>\n");
-            unset($_SESSION['edited']);
+            unset($_SESSION["added_profile"]);
           } else {
             echo "";
           }

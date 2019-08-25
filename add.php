@@ -43,10 +43,15 @@
             <textarea class="form-control" name="summary" id="summary" rows="8" cols="80"></textarea>
         </div>
         <button type="submit" name="add" class="btn btn-primary">Add</button>
-        <button type="submit" name="cancel" class="btn btn-primary">Cancel</button>
+        <button type="submit" name="cancel" class="btn btn-warning">Cancel</button>
       </form>
 
       <?php
+        if (isset($_POST["cancel"])) {
+          header("location: index.php");
+          return;
+        }
+          
         if (isset($_POST["add"])) {
           $firstName = htmlentities($_POST["first_name"]);
           $lastName = htmlentities($_POST["last_name"]);
@@ -54,10 +59,7 @@
           $headline = htmlentities($_POST["headline"]);
           $summary = htmlentities($_POST["summary"]);
 
-          if (isset($_POST["cancel"])) {
-              header("location: index.php");
-              return;
-          } else if (isset($_POST["add"]) && ($firstName == "" || $lastName == "" || $email == "" || $headline == "" || $summary == "")) {
+          if (isset($_POST["add"]) && ($firstName == "" || $lastName == "" || $email == "" || $headline == "" || $summary == "")) {
             $_SESSION['error'] = "All fields are required";
             header("Location: add.php");
             return;

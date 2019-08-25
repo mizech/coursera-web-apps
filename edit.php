@@ -37,30 +37,31 @@ echo "<h1>Editing Profile for UMSI</h1>\n";
 <div class="form-group">
     <label for="first_name">First Name: </label>
     <input type="text" name="first_name"
-            id="first_name" value="<?php echo $profile["first_name"] ?>" />
+            id="first_name" class="form-control"
+            value="<?php echo $profile["first_name"] ?>" />
 </div>
 <div class="form-group">
     <label for="last_name">Last Name: </label>
-    <input type="text" name="last_name"
+    <input type="text" name="last_name" class="form-control"
             id="last_name" value="<?php echo $profile["last_name"] ?>" />
 </div>
 <div class="form-group">
     <label for="email">Email: </label>
-    <input type="text" name="email" id="email"
+    <input type="text" name="email" id="email" class="form-control"
             value="<?php echo $profile["email"] ?>" />
 </div>
 <div class="form-group">
     <label for="headline">Headline: </label>
-    <input type="text" name="headline" id="headline"
+    <input type="text" name="headline" id="headline" class="form-control"
             value="<?php echo $profile["headline"] ?>" />
 </div>
 <div class="form-group">
     <label for="summary">Summary: </label>
-    <input type="text" name="summary" id="summary"
+    <input type="text" name="summary" id="summary" class="form-control"
             value="<?php echo $profile["summary"] ?>" />
 </div>
-<input type="submit" name="save" value="Save">
-<input type="submit" name="cancel" value="Cancel">
+<input type="submit" name="save" value="Save" class="btn btn-primary">
+<input type="submit" name="cancel" value="Cancel" class="btn btn-warning">
 </form>
 
 <?php
