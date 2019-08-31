@@ -26,11 +26,21 @@ if (isset($_GET["profile_id"])) {
 
 require_once "connect.php";
 
-$stmt = $pdo->prepare('SELECT * FROM Profile WHERE profile_id = :id');
+$stmt = $pdo->prepare(
+    'SELECT * 
+    FROM Profile 
+    WHERE Profile.profile_id = :id');
 $stmt->execute(array(":id" => $_SESSION["id"]));
 $profile = $stmt->fetch();
 
-echo "<h1>Editing Profile for UMSI</h1>\n";
+$stmt = $pdo->prepare(
+    'SELECT * 
+    FROM Position 
+    WHERE Position.profile_id = :id');
+$stmt->execute(array(":id" => $_SESSION["id"]));
+$position = $stmt->fetchAll();
+
+echo "<h1>Editing Profile for " . $_SESSION["name"] . "</h1>\n";
 
 ?>
 <form method="post">
@@ -60,6 +70,18 @@ echo "<h1>Editing Profile for UMSI</h1>\n";
     <input type="text" name="summary" id="summary" class="form-control"
             value="<?php echo $profile["summary"] ?>" />
 </div>
+<?php
+    $i = 1;
+    foreach($position as $key => $value) {
+        echo "<div id='" . $value['position_id'] . "'>
+                <p>Year: <input type='text' name='year$i' value='" . $value['year'] . "'>
+                <input type='button' value='-' onclick='$(" . '#' . $value['position_id'] . "').remove();return false;'></p>
+                <textarea name='desc$i' rows='8' cols='80'>" . $value['description'] . "</textarea>
+             </div>";
+        $i++;
+    }
+?>
+
 <input type="submit" name="save" value="Save" class="btn btn-primary">
 <input type="submit" name="cancel" value="Cancel" class="btn btn-warning">
 </form>
@@ -75,6 +97,16 @@ if (isset($_POST["save"])) {
     $email = htmlentities($_POST["email"]);
     $headline = htmlentities($_POST["headline"]);
     $summary = htmlentities($_POST["summary"]);
+
+    require_once "utils.php";
+
+    $validatePosResult = validatePos();
+
+    if (strlen($validatePosResult) > 0) {
+        $_SESSION["error"] = $validatePosResult;
+        header("Location: edit.php");
+        return false;
+    }
 
     if (strpos($email, "@") === false) {
         $_SESSION['error'] = "Email address must contain @";
@@ -99,7 +131,32 @@ if (isset($_POST["save"])) {
         ':hl' => $headline,
         ':su' => $summary)
     );
+    // ----------------------------------------------------------
+    $stmt = $pdo->prepare('DELETE FROM Position
+        WHERE profile_id=:pid');
+    $stmt->execute(array( ':pid' => $_SESSION["id"]));
 
+    // Insert the position entries
+    $rank = 1;
+    for($i = 1; $i <= 9; $i++) {
+        if ( ! isset($_POST['year' . $i]) ) continue;
+        if ( ! isset($_POST['desc' . $i]) ) continue;
+
+        $year = $_POST['year' . $i];
+        $desc = $_POST['desc' . $i];
+
+        $stmt = $pdo->prepare('INSERT INTO Position
+            (profile_id, rank, year, description)
+        VALUES ( :pid, :rank, :year, :desc)');
+        $stmt->execute(array(
+            ':pid' => $_SESSION['id'],
+            ':rank' => $rank,
+            ':year' => $year,
+            ':desc' => $desc)
+        );
+        $rank++;
+    }
+    // ---------------------------------------------------------------
     $_SESSION['edited'] = true;
     unset($_SESSION["id"]);
 

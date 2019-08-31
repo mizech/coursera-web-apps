@@ -22,7 +22,7 @@
             unset($_SESSION['error']);
           }
       ?>
-      <h1>Adding Profile for UMSI !</h1>
+      <h1>Adding Profile for <?php echo $_SESSION["name"]; ?></h1>
       <form method="POST" action="#">
         <div class="form-group">
             <label for="first_name">First Name: </label>
@@ -74,7 +74,8 @@
             return false;
           }
 
-          if (isset($_POST["add"]) && ($firstName == "" || $lastName == "" || $email == "" || $headline == "" || $summary == "")) {
+          if (isset($_POST["add"])
+              && ($firstName == "" || $lastName == "" || $email == "" || $headline == "" || $summary == "")) {
             $_SESSION['error'] = "All fields are required";
             header("Location: add.php");
             return;
@@ -105,8 +106,6 @@
                 $i = 1;
                 $rank = 1;
       
-                var_dump($_POST);
-      
                 while ($i < 10) {
                   if (isset($_POST["desc" . $i])) {
                     $desc = htmlentities($_POST["desc" . $i]);
@@ -123,7 +122,7 @@
               $_SESSION["added_profile"] = true;
               header("location: index.php");
           } 
-        }  
+        }
       ?>
     </div>
     <script src="js/jquery.js"></script>
