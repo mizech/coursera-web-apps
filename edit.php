@@ -70,12 +70,18 @@ echo "<h1>Editing Profile for " . $_SESSION["name"] . "</h1>\n";
     <input type="text" name="summary" id="summary" class="form-control"
             value="<?php echo $profile["summary"] ?>" />
 </div>
+<div class="form-group">
+    <label for="summary">Position: </label>
+    <button name="add-position" id="add-position" class="btn btn-primary">+</button>
+</div>
+<div id="positions"></div>
+
 <?php
     $i = 1;
-    foreach($position as $key => $value) {
+    foreach($position as $value) {
         echo "<div id='" . $value['position_id'] . "'>
                 <p>Year: <input type='text' name='year$i' value='" . $value['year'] . "'>
-                <input type='button' value='-' onclick='$(" . '#' . $value['position_id'] . "').remove();return false;'></p>
+                <input type='button' value='-' onclick='$(\"#$value[position_id]\").remove(); return false;'></p>
                 <textarea name='desc$i' rows='8' cols='80'>" . $value['description'] . "</textarea>
              </div>";
         $i++;
@@ -157,12 +163,17 @@ if (isset($_POST["save"])) {
         $rank++;
     }
     // ---------------------------------------------------------------
-    $_SESSION['edited'] = true;
-    unset($_SESSION["id"]);
+        $_SESSION['edited'] = true;
 
-    header("Location: index.php");
-    return;
+        $tmp_id = $_SESSION["id"];
+        unset($_SESSION["id"]);
+
+        header("Location: edit.php?profile_id=$tmp_id");
     }
 }
-
 ?>
+        </div>
+        <script src="js/jquery.js"></script>
+        <script src="js/add.js"></script>
+  </body>
+</html>

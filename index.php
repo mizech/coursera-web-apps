@@ -19,7 +19,7 @@
             echo("<p style='color: green;'>Record edited</p>\n");
             unset($_SESSION["edited"]);
           } else if (isset($_SESSION["added_profile"])) {
-            echo("<p style='color: green;'>Record edited</p>\n");
+            echo("<p style='color: green;'>Profile added</p>\n");
             unset($_SESSION["added_profile"]);
           } else {
             echo "";
@@ -41,7 +41,8 @@
                 echo "<tr><th>Name</th><th>Headline</th><th>Action</th></tr>";
 
                 foreach ($pdo->query($sql) as $row) {
-                  echo "<tr><td>" . $row["first_name"] . " " . $row["last_name"] 
+                  echo "<tr><td><a href='view.php?profile_id=" . $row["profile_id"] 
+                    . "'>" . $row["first_name"] . " " . $row["last_name"] . "</a>"
                     . "</td><td>" . $row["headline"] 
                     . "</td><td><a href='edit.php?profile_id=" 
                       . $row["profile_id"] 
