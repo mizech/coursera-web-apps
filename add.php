@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Michael Zech</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css">
     <link rel="stylesheet" href="./css/style.css" type="text/css">
   </head>
   <body>
@@ -44,6 +45,11 @@
             <label for="summary">Summary: </label>
             <textarea class="form-control" name="summary" id="summary" rows="8" cols="80"></textarea>
         </div>
+        <div class="form-group">
+            <label for="summary">Education: </label>
+            <button name="add-education" id="add-education" class="btn btn-primary">+</button>
+        </div>
+        <div id="education"></div>
         <div class="form-group">
             <label for="summary">Position: </label>
             <button name="add-position" id="add-position" class="btn btn-primary">+</button>
@@ -125,7 +131,8 @@
         }
       ?>
     </div>
-    <script src="js/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
     <script src="js/add.js"></script>
   </body>
 </html>

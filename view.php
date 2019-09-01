@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Michael Zech</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css">
     <link rel="stylesheet" href="./css/style.css" type="text/css">
   </head>
   <body>
