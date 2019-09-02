@@ -23,7 +23,7 @@ $(() => {
       $("#education").append(`<div id="education${++educationNumber}">
         <p>Year: <input type="text" name="year${educationNumber}" value="">
         <input type="button" value="-" onclick="$('#education${educationNumber}').remove();return false;"></p>
-        <p>School: <input type="text" size="80" name="desc${educationNumber}" class="school" value="" /></p>
+        <p>School: <input type="text" size="80" name="school${educationNumber}" class="school" value="" /></p>
         </div>
       </div>`);
 

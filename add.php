@@ -119,14 +119,58 @@
       
                     $sql = "INSERT INTO Position (profile_id, rank, year, description) VALUES (:lid, :rank, :ye, :de)";
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute(array(":lid" => $lastId, ":rank" => $rank++, ":ye" => $year, ":de" => $desc));
+                    $stmt->execute(array(":lid" => $lastId, ":rank" => $rank, ":ye" => $year, ":de" => $desc));
                   }
       
                   $i++;
                 }
+
+                $i = 1;
+
+                while ($i < 10) {
+                  if (isset($_POST["year" . $i])) {
+                    $year = htmlentities($_POST["year" . $i]);
+                    $school = htmlentities($_POST["school" . $i]);
+
+                    echo "<p>School: " . $school . "</p>";
+                      // SELECT institution_id FROM Institution where name like '%ford%'
+                    $sql = "SELECT institution_id FROM Institution where name like '%" . $school . "%'";
+                    $stmt = $pdo->prepare($sql);
+                    // $stmt->bindValue(':na', "%{$school}%", PDO::PARAM_STR);
+                    $stmt->execute();
+
+                    $iid = "";
+
+                    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                      $iid = $row["institution_id"];
+
+                      if (count($iid) > 0) {
+                        break;
+                      }
+                    }
+                    
+                    //cho var_dump($stmt);
+                    //echo var_dump($institution);
+                    // echo "<p>Inst.: " . $institution["institution_id"] . "</p>";
+                    
+                    $sql = "INSERT INTO Education(institution_id, profile_id, rank, year) VALUES(:iid, :lid, :rank, :year)";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute(
+                      array(
+                        ":iid" => $iid, 
+                        "lid" => $lastId, 
+                        ":rank" => $rank, 
+                        ":year" => $year)
+                      );
+                  }
+      
+                  $i++;
+                }
+
+                $rank++;
               
               $_SESSION["added_profile"] = true;
-              header("location: index.php");
+              // header("location: index.php");
           } 
         }
       ?>

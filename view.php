@@ -26,7 +26,15 @@
                 WHERE Position.profile_id = :id');
             $stmt->execute(array(":id" => $_GET["profile_id"]));
             $position = $stmt->fetchAll();
-            
+
+            $stmt = $pdo->prepare(
+              'SELECT *
+              FROM Profile 
+              INNER JOIN Education ON Profile.profile_id = Education.profile_id 
+              INNER JOIN Institution ON Institution.institution_id = Education.institution_id 
+              WHERE Profile.profile_id = :id');
+            $stmt->execute(array(":id" => $_GET["profile_id"]));
+            $education = $stmt->fetchAll();
         ?>
         <div>
             <p>First Name: <?php echo $profile["first_name"]; ?></p>
@@ -34,6 +42,16 @@
             <p>Email: <?php echo $profile["email"]; ?></p>
             <p>Headline: <?php echo $profile["headline"]; ?></p>
             <p>Summary: <?php echo $profile["summary"]; ?></p>
+            
+            <p>Education:</p>
+            <ul>
+                <?php
+                    foreach($education as $value) {
+                        echo "<li>" . $value["year"] . ": " 
+                            . $value["name"] . "</li>";
+                    }
+                ?>
+            </ul>
 
             <p>Position:</p>
             <ul>
