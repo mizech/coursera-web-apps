@@ -14,7 +14,7 @@
           session_start();
 
           if (isset($_SESSION["delete_confirmed"]) ) {
-            echo("<p style='color: green;'>Record deleted</p>\n");
+            echo("<p style='color: green;'>Profile deleted</p>\n");
             unset($_SESSION["delete_confirmed"]);
           } else if (isset($_SESSION["edited"])) {
             echo("<p style='color: green;'>Record edited</p>\n");
@@ -47,9 +47,9 @@
                     . "</td><td>" . $row["headline"] 
                     . "</td><td><a href='edit.php?profile_id=" 
                       . $row["profile_id"] 
-                    . "'>Edit</a><a href='delete.php?profile_id=" 
+                    . "'>Edit</a>" . " " . "<a href='delete.php?profile_id=" 
                       . $row["profile_id"] 
-                    . "'> Delete</a></td></tr>";
+                    . "'>Delete</a></td></tr>";
                 }
               
                 echo "</table>";

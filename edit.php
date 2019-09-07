@@ -41,6 +41,15 @@ $stmt = $pdo->prepare(
 $stmt->execute(array(":id" => $_SESSION["id"]));
 $position = $stmt->fetchAll();
 
+$stmt = $pdo->prepare(
+    'SELECT name, year, Education.profile_id, Education.institution_id 
+    FROM Institution 
+    INNER JOIN Education 
+        ON Institution.institution_id = Education.institution_id 
+    WHERE Education.profile_id = :id');
+$stmt->execute(array(":id" => $_SESSION["id"]));
+$education = $stmt->fetchAll();
+
 echo "<h1>Editing Profile for " . $_SESSION["name"] . "</h1>\n";
 
 ?>
@@ -76,6 +85,18 @@ echo "<h1>Editing Profile for " . $_SESSION["name"] . "</h1>\n";
     <button name="add-education" id="add-education" class="btn btn-primary">+</button>
 </div>
 <div id="education"></div>
+<?php
+    $i = 1;   
+    foreach($education as $value) {
+        echo "<div id='" . $value['institution_id'] . "_" . $value['profile_id'] . "_" . $value['year'] . "'>
+                <p>Year: <input type='text' name='edu_year$i' value='" . $value['year'] . "'>
+                <input type='button' class='minusButton' value='-' id='minusButton" . $i . "' onclick='$(\"#$value[institution_id]\").remove(); return false;'></p>
+                <p>School: <input type='text' name='school$i' value='" . $value['name'] . "'></p>
+                <input type='hidden' name='ids$i' value='" . $value['profile_id'] . "_" . $value['institution_id'] . "' />
+             </div>";
+        $i++;
+    }
+?>
 <div class="form-group">
     <label for="summary">Position: </label>
     <button name="add-position" id="add-position" class="btn btn-primary">+</button>
@@ -83,7 +104,7 @@ echo "<h1>Editing Profile for " . $_SESSION["name"] . "</h1>\n";
 <div id="positions"></div>
 
 <?php
-    $i = 1;   
+    $i = 1;
     foreach($position as $value) {
         echo "<div id='" . $value['position_id'] . "'>
                 <p>Year: <input type='text' name='year$i' value='" . $value['year'] . "'>
@@ -168,13 +189,37 @@ if (isset($_POST["save"])) {
         );
         $rank++;
     }
+
+    $stmt = $pdo->prepare('DELETE FROM Education
+        WHERE profile_id=:pid');
+    $stmt->execute(array( ':pid' => $_SESSION["id"]));
+
+    $rank = 1;
+    for($i = 1; $i <= 9; $i++) {
+        if ( ! isset($_POST['edu_year' . $i]) ) continue;
+        if ( ! isset($_POST['name' . $i]) ) continue;
+        
+        $parts = split("_", $_POST["ids" . $i]);
+        $year = $_POST['year' . $i];
+
+        $stmt = $pdo->prepare('INSERT INTO Education
+            (institution_id, profile_id, rank, year)
+        VALUES (:iid, :pid, :rank, :year)');
+        $stmt->execute(array(
+            ':iid' => $parts[1],
+            ':pid' => $_SESSION['id'],
+            ':rank' => $rank,
+            ':year' => $year)
+        );
+        $rank++;
+    }
     // ---------------------------------------------------------------
         $_SESSION['edited'] = true;
 
         $tmp_id = $_SESSION["id"];
         unset($_SESSION["id"]);
 
-        header("Location: edit.php?profile_id=$tmp_id");
+        header("Location: index.php");
     }
 }
 ?>

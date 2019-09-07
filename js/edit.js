@@ -18,4 +18,24 @@ $(() => {
       alert("Maximum of nine position entries exceeded");
     }
   });
+
+  let educationNumber = 0;
+  $("#add-education").click(event => {
+    event.preventDefault();
+
+    if ($("#education").children().length < 9) {
+      $("#education").append(`<div id="education${++educationNumber}">
+        <p>Year: <input type="text" name="year${educationNumber}" value="">
+        <input type="button" value="-" onclick="$('#education${educationNumber}').remove();return false;"></p>
+        <p>School: <input type="text" size="80" name="school${educationNumber}" class="school" value="" /></p>
+        </div>
+      </div>`);
+
+      $(".school").autocomplete({
+        source: "school.php"
+      });
+    } else {
+      alert("Maximum of nine position entries exceeded");
+    }
+  });
 });

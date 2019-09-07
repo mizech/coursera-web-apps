@@ -41,6 +41,11 @@
                 $stmt = $pdo->prepare($sql);
         
                 $stmt->execute([":profile_id" => $id]);
+
+                $sql = 'DELETE FROM Education WHERE profile_id = :profile_id';
+                $stmt = $pdo->prepare($sql);
+        
+                $stmt->execute([":profile_id" => $id]);
         
                 $_SESSION['delete_confirmed'] = true;
                 

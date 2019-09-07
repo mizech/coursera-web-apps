@@ -132,11 +132,9 @@
                     $year = htmlentities($_POST["year" . $i]);
                     $school = htmlentities($_POST["school" . $i]);
 
-                    echo "<p>School: " . $school . "</p>";
-                      // SELECT institution_id FROM Institution where name like '%ford%'
-                    $sql = "SELECT institution_id FROM Institution where name like '%" . $school . "%'";
+                    $sql = "SELECT institution_id FROM Institution where name like '" . $school . "'";
                     $stmt = $pdo->prepare($sql);
-                    // $stmt->bindValue(':na', "%{$school}%", PDO::PARAM_STR);
+                    $stmt->bindValue(':na', "%{$school}%", PDO::PARAM_STR);
                     $stmt->execute();
 
                     $iid = "";
@@ -149,9 +147,13 @@
                       }
                     }
                     
-                    //cho var_dump($stmt);
-                    //echo var_dump($institution);
-                    // echo "<p>Inst.: " . $institution["institution_id"] . "</p>";
+                    if ($iid == "") {
+                      $sql = "INSERT INTO Institution(name) VALUES(:na)";
+                      $stmt = $pdo->prepare($sql);
+                      $stmt->execute(array(":na" => $school));
+
+                      $iid = $pdo->lastInsertId();
+                    }
                     
                     $sql = "INSERT INTO Education(institution_id, profile_id, rank, year) VALUES(:iid, :lid, :rank, :year)";
                     $stmt = $pdo->prepare($sql);
@@ -170,7 +172,7 @@
                 $rank++;
               
               $_SESSION["added_profile"] = true;
-              // header("location: index.php");
+              header("location: index.php");
           } 
         }
       ?>
