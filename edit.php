@@ -88,11 +88,10 @@ echo "<h1>Editing Profile for " . $_SESSION["name"] . "</h1>\n";
 <?php
     $i = 1;   
     foreach($education as $value) {
-        echo "<div id='" . $value['institution_id'] . "_" . $value['profile_id'] . "_" . $value['year'] . "'>
-                <p>Year: <input type='text' name='edu_year$i' value='" . $value['year'] . "'>
-                <input type='button' class='minusButton' value='-' id='minusButton" . $i . "' onclick='$(\"#$value[institution_id]\").remove(); return false;'></p>
-                <p>School: <input type='text' name='school$i' value='" . $value['name'] . "'></p>
-                <input type='hidden' name='ids$i' value='" . $value['profile_id'] . "_" . $value['institution_id'] . "' />
+        echo "<div id='educationId" . $i . "'>
+                <p>Year: <input type='text' name='eduYear" . $i . "' value='" . $value['year'] . "'>
+                <input type='button' class='minusButton' value='-' id='minusButton" . $i . "' onclick='$(\"#educationId$value[institution_id]\").remove(); return false;'></p>
+                <p>School: <input type='text' name='school" . $i . "' value='" . $value['name'] . "'></p>
              </div>";
         $i++;
     }
@@ -132,6 +131,14 @@ if (isset($_POST["save"])) {
     $summary = htmlentities($_POST["summary"]);
 
     require_once "utils.php";
+
+    for ($i = 1; i <= 9; $i++) {
+        if (!is_numeric($_POST["eduYear" + $i])) {
+            $_SESSION["error"] = "Year must be numeric";
+            header("Location: edit.php");
+            return false;
+        }
+    }
 
     $validatePosResult = validatePos();
 
@@ -195,18 +202,44 @@ if (isset($_POST["save"])) {
     $stmt->execute(array( ':pid' => $_SESSION["id"]));
 
     $rank = 1;
-    for($i = 1; $i <= 9; $i++) {
-        if ( ! isset($_POST['edu_year' . $i]) ) continue;
-        if ( ! isset($_POST['name' . $i]) ) continue;
-        
-        $parts = split("_", $_POST["ids" . $i]);
-        $year = $_POST['year' . $i];
 
+    var_dump($_POST);
+
+    for($i = 0; $i < 9; $i++) {
+        if ( ! isset($_POST['eduYear' . $i]) ) continue;
+        if ( ! isset($_POST['school' . $i]) ) continue;
+
+        $year = htmlentities($_POST['eduYear' . $i]);
+        $school = htmlentities($_POST["school" . $i]);
+
+        $sql = "SELECT institution_id FROM Institution where name like '" . $school . "'";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':na', "%{$school}%", PDO::PARAM_STR);
+        $stmt->execute();
+
+        $iid = "";
+
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $iid = $row["institution_id"];
+
+            if (count($iid) > 0) {
+            break;
+            }
+        }
+
+        if (strlen($iid) == 0) {
+            $sql = "INSERT INTO Institution(name) VALUES(:na)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(":na" => $school));
+
+            $iid = $pdo->lastInsertId();
+        } 
+       
         $stmt = $pdo->prepare('INSERT INTO Education
             (institution_id, profile_id, rank, year)
         VALUES (:iid, :pid, :rank, :year)');
         $stmt->execute(array(
-            ':iid' => $parts[1],
+            ':iid' => $iid,
             ':pid' => $_SESSION['id'],
             ':rank' => $rank,
             ':year' => $year)
@@ -219,7 +252,7 @@ if (isset($_POST["save"])) {
         $tmp_id = $_SESSION["id"];
         unset($_SESSION["id"]);
 
-        header("Location: index.php");
+        // header("Location: index.php");
     }
 }
 ?>

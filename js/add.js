@@ -21,7 +21,7 @@ $(() => {
 
     if ($("#education").children().length < 9) {
       $("#education").append(`<div id="education${++educationNumber}">
-        <p>Year: <input type="text" name="year${educationNumber}" value="">
+        <p>Year: <input type="text" name="eduYear${educationNumber}" value="">
         <input type="button" value="-" onclick="$('#education${educationNumber}').remove();return false;"></p>
         <p>School: <input type="text" size="80" name="school${educationNumber}" class="school" value="" /></p>
         </div>

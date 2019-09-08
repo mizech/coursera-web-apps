@@ -19,7 +19,7 @@
           }
 
           if (isset($_SESSION["error"])) {
-            echo "<p class='error'>" . $_SESSION['error'] . "</p>";
+            echo "<p class='error' style='color: red;'>" . $_SESSION['error'] . "</p>";
             unset($_SESSION['error']);
           }
       ?>
@@ -79,6 +79,14 @@
             header("Location: add.php");
             return false;
           }
+
+          for ($i = 1; i <= 9; $i++) {
+            if (!is_numeric($_POST["eduYear" + $i])) {
+                $_SESSION["error"] = "Year must be numeric";
+                header("Location: add.php");
+                return false;
+            }
+        }
 
           if (isset($_POST["add"])
               && ($firstName == "" || $lastName == "" || $email == "" || $headline == "" || $summary == "")) {
