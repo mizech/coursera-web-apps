@@ -2,6 +2,9 @@
 
 Final project from the Coursera-course [Web Applications for Everybody](https://www.coursera.org/specializations/web-applications?) by Charles Severance.
 
+A web-application for to create and manage online-resumes.
+
+![screenshot](./screenshot.png)
 
 ![certificate](./certificate.png)
 
