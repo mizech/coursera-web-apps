@@ -7,7 +7,8 @@ Final project from the Coursera-course [Web Applications for Everybody](https://
 
 The SQL-statements (provided by the instructor), which are needed for to create the database and the tables:
 
-```CREATE TABLE Institution (
+```
+CREATE TABLE Institution (
   institution_id INTEGER NOT NULL KEY AUTO_INCREMENT,
   name VARCHAR(255),
   UNIQUE(name)
