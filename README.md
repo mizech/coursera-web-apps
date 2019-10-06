@@ -6,8 +6,6 @@ A web-application for to create and manage online-resumes.
 
 ![screenshot](./screenshot.png)
 
-![certificate](./certificate.png)
-
 The SQL-statements (provided by the instructor), which are needed for to create the database and the tables:
 
 ```
@@ -70,3 +68,4 @@ CREATE TABLE Education (
 
 ```
 
+![certificate](./certificate.png)
