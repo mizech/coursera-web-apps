@@ -1,6 +1,6 @@
 # Resume Registry
 
-Final project from the Coursera-course [Web Applications for Everybody](https://www.coursera.org/specializations/web-applications?) by Charles Severance.
+The final project of the Coursera-course [Web Applications for Everybody](https://www.coursera.org/specializations/web-applications?) by Charles Severance.
 
 A web-application for to create and manage online-resumes.
 
