@@ -2,7 +2,7 @@
 
 The final project of the Coursera-course [Web Applications for Everybody](https://www.coursera.org/specializations/web-applications?) by Charles Severance.
 
-A web-application for to create and manage online-resumes.
+A web-application for to create and manage online-resumes. Front-End done with jQuery and Bootstrap. Back-End based upon PHP and MySQL.
 
 ![screenshot](./screenshot.png)
 
